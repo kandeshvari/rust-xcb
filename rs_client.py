@@ -1257,8 +1257,11 @@ def _rs_accessor(typeobj, field, disable_pod_acc=False):
                 _r('}')
             _r('}')
         else:
-            _r('pub fn %s(&self) -> %s {',
-                    field.rs_field_name, field.rs_iterator_type)
+            lftm = ""
+            if field.rs_field_name in ("visuals", "allowed_depths", "roots"):
+                lftm = "<'a>"
+            _r('pub fn %s(&self) -> %s%s {',
+                    field.rs_field_name, field.rs_iterator_type, lftm)
             with _r.indent_block():
                 _r('unsafe {')
                 with _r.indent_block():
